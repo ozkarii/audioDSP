@@ -18,6 +18,13 @@ class AudioPlayer {
     ~AudioPlayer();
 
     void initPlayer(unsigned int maxChannels);
+
+    void loadAudio();
+
+    void playAudio();
+    
+    void setVolume();
+
     
     private:
 
