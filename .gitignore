@@ -6,4 +6,4 @@
 *.wav
 *.o
 **/AudioFile
-
+**.gch
