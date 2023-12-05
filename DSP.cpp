@@ -69,3 +69,15 @@ void DSP::zeroPad(cVector &input)
     while (nearestPow2 < input.size()) nearestPow2 <<= 1;
     input.resize(nearestPow2, std::complex<double>(0, 0));
 }
+
+cVector DSP::toComplexVector(std::vector<double> &input)
+{
+    cVector result(input.size());
+
+    for (int i = 0; i < input.size(); i++)
+    {
+        result[i] = std::complex<double>(input[i], 0);
+    }
+
+    return result;
+}

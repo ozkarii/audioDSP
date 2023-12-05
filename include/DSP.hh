@@ -13,16 +13,6 @@ namespace DSP
 
     void zeroPad(cVector &input);
 
-    cVector toComplexVector(std::vector<double> &input)
-    {
-        cVector result(input.size());
-
-        for (int i = 0; i < input.size(); i++)
-        {
-            result[i] = std::complex<double>(input[i], 0);
-        }
-
-        return result;
-    }
-
+    cVector toComplexVector(std::vector<double> &input);
+    
 };
