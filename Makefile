@@ -1,10 +1,8 @@
-# export LD_LIBRARY_PATH=/mnt/c/Users/oskar/Desktop/omat_setit/audio/lib:$LD_LIBRARY_PATH
-
 CXX = g++
-CXXFLAGS = -Wall -std=c++11
+CXXFLAGS = -Wall -std=c++17 -g # -g for debugging
 LDLIBS = `sdl2-config --cflags --libs`
 
-SRCS = player.cpp
+SRCS = Player.cpp DSP.cpp 
 OBJS = $(SRCS:.cpp=.o)
 TARGET = app.bin
 
