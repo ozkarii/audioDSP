@@ -10,9 +10,9 @@ std::vector<float> DSP::convolution(const std::vector<float> &sound,
     std::cout << soundLength + irLength << std::endl;
     std::vector<float> output(soundLength + irLength - 1, 0);
 
-    for (int n = 0; n < soundLength; n++)
+    for (unsigned int n = 0; n < soundLength; n++)
     {
-        for (int k = 0; k < irLength; k++)
+        for (unsigned int k = 0; k < irLength; k++)
         {
             output[n + k] += ir[k] * sound[n];
         }
@@ -35,12 +35,12 @@ cVector DSP::fft(cVector &input)
         return input;
     }
 
-    for (int n(0); n < len; n += 2)
+    for (unsigned int n(0); n < len; n += 2)
     {
         even.push_back(input.at(n));
     }
 
-    for (int n(1); n < len; n += 2) 
+    for (unsigned int n(1); n < len; n += 2) 
     {
         odd.push_back(input.at(n));
     }
@@ -65,7 +65,7 @@ cVector DSP::fft(cVector &input)
 // add zeros until the length of input is a power of two
 void DSP::zeroPad(cVector &input)
 {
-    int nearestPow2 = 1;
+    unsigned long int nearestPow2 = 1;
     while (nearestPow2 < input.size()) nearestPow2 <<= 1;
     input.resize(nearestPow2, std::complex<double>(0, 0));
 }
@@ -74,7 +74,7 @@ cVector DSP::toComplexVector(std::vector<double> &input)
 {
     cVector result(input.size());
 
-    for (int i = 0; i < input.size(); i++)
+    for (unsigned int i = 0; i < input.size(); i++)
     {
         result[i] = std::complex<double>(input[i], 0);
     }

@@ -79,7 +79,7 @@ void wavCallback(void* userdata, Uint8* stream, int bufferLen)
 
     Uint32 length;
 
-    if (bufferLen > audio->length)
+    if ((Uint32)bufferLen > audio->length)
     {
         length = audio->length;
     }
@@ -106,7 +106,7 @@ int main()
     Uint8* wavStart;        // pointer to the start of the wav file (or maybe the start of the block)
     Uint32 wavLength;       // length of the wav file
 
-    const char* file = "haha.wav";
+    const char* file = "examples/haha.wav";
     
     /*
     //test
