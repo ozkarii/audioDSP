@@ -1,3 +1,6 @@
+#ifndef DSP_HH
+#define DSP_HH
+
 #include <vector>
 #include <complex>
 #include <cmath>
@@ -16,3 +19,5 @@ namespace DSP
     cVector toComplexVector(std::vector<double> &input);
     
 };
+
+#endif
