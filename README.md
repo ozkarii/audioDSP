@@ -7,4 +7,5 @@ Run ```sudo apt install libsdl2-dev``` (or libsdl2-2.0-0) to install dependencie
 - Compiler and linker flags
 - Linux commands and using C++ on linux
 - Audio programming
-- How to make a project with makefile
+- How makefiles work
+- Working with git branches
