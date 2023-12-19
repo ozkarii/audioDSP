@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++17 -g # -g for debugging
 LDLIBS = `sdl2-config --cflags --libs`
 
-SRCS = Player.cpp DSP.cpp AudioUtils.cpp Cli.cpp
+SRCS = Player.cpp DSP.cpp AudioUtils.cpp Main.cpp
 OBJS = $(SRCS:.cpp=.o)
 TARGET = app.bin
 
