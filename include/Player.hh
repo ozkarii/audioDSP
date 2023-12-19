@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include "SDL/SDL.h"
-#include "DSP.hh"
 #include "AudioUtils.hh"
 
 
@@ -23,7 +22,6 @@ class Player {
 public:
     Player();
     ~Player();
-    void init();
     bool loadWav(const char* filename);
     void play();
 
