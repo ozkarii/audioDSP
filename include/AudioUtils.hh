@@ -17,11 +17,18 @@ struct WavInfo
 
 namespace AudioUtils {
 
-    WavInfo createWavInfo(AudioFile<float>* audioFile);
+    //
+    WavInfo createWavInfo(AudioFile<double>* audioFile);
+    
+    // creates an AudioFile type object from a .wav file for example
+    // AudioFile object allows access to sample data etc.
+    // TODO: maybe change char* to std::string
     AudioFile<double> createAudioFile(const char *file);
-    void writeWavFile(AudioFile<float> &audioFile, std::string outputFilename);
-    AudioFile<float> samplesToAudioFile(std::vector<float> &left,
-                                        std::vector<float> &right, WavInfo info);
+    
+    void writeWavFile(AudioFile<double> &audioFile, std::string outputFilename);
+    
+    AudioFile<double> samplesToAudioFile(std::vector<double> &left,
+                                        std::vector<double> &right, WavInfo info);
 };
 
 

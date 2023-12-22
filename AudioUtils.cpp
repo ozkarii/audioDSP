@@ -1,7 +1,7 @@
 #include "include/AudioUtils.hh"
 
 
-WavInfo AudioUtils::createWavInfo(AudioFile<float>* audioFile)
+WavInfo AudioUtils::createWavInfo(AudioFile<double>* audioFile)
 {
     WavInfo wavInfo;
     wavInfo.sampleRate = audioFile->getSampleRate();
@@ -21,17 +21,17 @@ AudioFile<double> AudioUtils::createAudioFile(const char* file)
     return audioFile;    
 }
 
-void AudioUtils::writeWavFile(AudioFile<float> &audioFile, std::string outputFilename)
+void AudioUtils::writeWavFile(AudioFile<double> &audioFile, std::string outputFilename)
 {
     audioFile.save(outputFilename, AudioFileFormat::Wave);
 }
 
-AudioFile<float> AudioUtils::samplesToAudioFile(std::vector<float> &left, 
-                                    std::vector<float> &right, WavInfo info)
+AudioFile<double> AudioUtils::samplesToAudioFile(std::vector<double> &left, 
+                                    std::vector<double> &right, WavInfo info)
 {
-    AudioFile<float> output;
+    AudioFile<double> output;
     output.samples.at(0) = left;
-    output.samples.at(1) = right;
+    output.samples.at(1) = right; // out of range error here
 
     output.setSampleRate(info.sampleRate);
     output.setBitDepth(info.bitDepth);
