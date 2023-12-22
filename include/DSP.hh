@@ -4,14 +4,13 @@
 #include <vector>
 #include <complex>
 #include <cmath>
-
-using cVector = std::vector<std::complex<double>>;
+#include "Math.hh"
 
 namespace DSP
 {
 
-    std::vector<float> convolution(const std::vector<float> &sound,
-                                   const std::vector<float> &ir);
+    std::vector<double> slowConvolution(std::vector<double> &sound,
+                                       std::vector<double> &ir);
     
     cVector fft(cVector &input);
 
@@ -20,8 +19,19 @@ namespace DSP
     std::vector<double> ifft(cVector &input);
 
     void zeroPad(cVector &input);
+    void zeroPad(cVector &input, unsigned int length);
 
     cVector toComplexVector(std::vector<double> &input);
+
+    std::vector<double> convolution(std::vector<double> &a,
+                                    std::vector<double> &b);
+
+    std::vector<double> decimate(std::vector<double> &input,
+                                 unsigned int factor);
+            
+    std::vector<double> interpolateZeros(std::vector<double> &input,
+                                         unsigned int factor);
+    
     
 };
 

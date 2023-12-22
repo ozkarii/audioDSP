@@ -2,13 +2,13 @@
 #include "include/DSP.hh"
 
 
-std::vector<float> DSP::convolution(const std::vector<float> &sound,
-                                    const std::vector<float> &ir)
+std::vector<double> DSP::slowConvolution(std::vector<double> &sound,
+                                        std::vector<double> &ir)
 {
     unsigned int irLength = ir.size();
     unsigned int soundLength = sound.size();
     std::cout << soundLength + irLength << std::endl;
-    std::vector<float> output(soundLength + irLength - 1, 0);
+    std::vector<double> output(soundLength + irLength - 1, 0);
 
     for (unsigned int n = 0; n < soundLength; n++)
     {
@@ -124,6 +124,13 @@ void DSP::zeroPad(cVector &input)
     input.resize(nearestPow2, std::complex<double>(0, 0));
 }
 
+// add zeros until given length is reached
+void DSP::zeroPad(cVector &input, unsigned int length)
+{
+    input.resize(length, std::complex<double>(0, 0));
+}
+
+
 cVector DSP::toComplexVector(std::vector<double> &input)
 {
     cVector result(input.size());
@@ -134,4 +141,67 @@ cVector DSP::toComplexVector(std::vector<double> &input)
     }
 
     return result;
+}
+
+
+std::vector<double> DSP::convolution(std::vector<double> &a,
+                                     std::vector<double> &b)
+{
+
+    // convert input signals to complex vectors
+    cVector complexA = DSP::toComplexVector(a);
+    cVector complexB = DSP::toComplexVector(b);
+
+    // define minimum output length to match linear convolution
+    unsigned int outN = a.size() + b.size() - 1;
+    
+    // add zeros to minimum output length
+    DSP::zeroPad(complexA, outN);
+    DSP::zeroPad(complexB, outN);
+
+    // add zeros to the end to make both's length a power of two
+    DSP::zeroPad(complexA);
+    DSP::zeroPad(complexB);
+
+    // perform fft on both signals
+    cVector fftA = DSP::fft(complexA);
+    cVector fftB = DSP::fft(complexB);
+
+    int szA = fftA.size();
+    int szB = fftB.size();
+
+    // multiply fft's elementwise because fft(conv(a,b)) = fft(a)*fft(b)
+    cVector fftOfConv = Math::multiplyElementWise(fftA, fftB);
+
+    int fftOfConvSz = fftOfConv.size();
+
+    // finally perform inverse fft to get the convolution of a and b
+    std::vector<double> conv = ifft(fftOfConv);
+
+    int sz = conv.size();
+
+    if (conv.size() >= outN) 
+    {
+        conv.erase(conv.begin() + outN, conv.end());
+    } 
+    else 
+    {
+        conv.clear();
+    }
+
+    return conv;
+
+}
+
+
+std::vector<double> DSP::decimate(std::vector<double> &input,
+                                  unsigned int factor)
+{
+    return std::vector<double>();
+}
+
+std::vector<double> DSP::interpolateZeros(std::vector<double> &input,
+                                          unsigned int factor)
+{
+    return std::vector<double>();
 }
