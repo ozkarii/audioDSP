@@ -12,7 +12,7 @@ std::vector<double> Math::multiplyElementWise(std::vector<double> &a,
     
     std::vector<double> output(a.size());
     
-    for (int i = 0; i < a.size(); i++)
+    for (unsigned int i = 0; i < a.size(); i++)
     {
         output.at(i) = a.at(i) * b.at(i);
     }
@@ -31,7 +31,7 @@ cVector Math::multiplyElementWise(cVector &a, cVector &b)
     
     cVector output(a.size());
     
-    for (int i = 0; i < a.size(); i++)
+    for (unsigned int i = 0; i < a.size(); i++)
     {
         output.at(i) = a.at(i) * b.at(i);
     }
