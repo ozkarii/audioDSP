@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <cctype>
+#include <csignal>
 #include "include/DSP.hh"
 #include "include/Player.hh"
 
@@ -60,6 +61,12 @@ void printVector(std::vector<double> &input, std::string header = "",
     }
 }
 
+void exitHandler(int signal)
+{
+    std::cout << " Exiting... caught signal: " << signal << std::endl;
+    exit(1);
+}
+
 bool playSound(std::string &filename) 
 {
     Player audioPlayer = Player();
@@ -99,6 +106,8 @@ void filter2ch(std::string &a, std::string &b, std::string &out)
 
 int main(int argc, char* argv[]) 
 {
+    signal(SIGINT, exitHandler);
+
     if (argc == 1)
     {
         // add list of all commands
