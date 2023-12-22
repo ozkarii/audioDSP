@@ -60,13 +60,48 @@ void printVector(std::vector<double> &input, std::string header = "",
     }
 }
 
-// void filter(std::string &a, std::string &b);
+bool playSound(std::string &filename) 
+{
+    Player audioPlayer = Player();
+    if ( not(audioPlayer.loadWav(filename.c_str())) ) 
+    {
+        std::cout << "Error loading file" << std::endl;
+        return false;
+    }
+    audioPlayer.play();
+    return true;
+}
+
+void filter2ch(std::string &a, std::string &b, std::string &out)
+{
+
+    AudioFile<double> aFile = AudioUtils::createAudioFile(a.c_str());
+    AudioFile<double> bFile = AudioUtils::createAudioFile(b.c_str());
+
+    WavInfo spec = AudioUtils::createWavInfo(&aFile);
+    
+    // hard code 16bit because 32bit doesn't work
+    spec.bitDepth = 16;
+
+    std::vector<double> aSamplesL = aFile.samples.at(0);
+    std::vector<double> bSamplesL = bFile.samples.at(0);
+    std::vector<double> aSamplesR = aFile.samples.at(1);
+    std::vector<double> bSamplesR = bFile.samples.at(1);
+
+    std::vector<double> leftConv = DSP::convolution(aSamplesL, bSamplesL);
+    std::vector<double> rightConv = DSP::convolution(aSamplesR, bSamplesR);
+
+    AudioFile<double> convFile = AudioUtils::samplesToAudioFile(leftConv,
+                                                        rightConv, spec);
+    
+    AudioUtils::writeWavFile(convFile, out);
+}
 
 int main(int argc, char* argv[]) 
 {
-    Player audioPlayer = Player();
     if (argc == 1)
     {
+        // add list of all commands
         std::cout << "no params" << std::endl;
         return 1;
     }
@@ -85,7 +120,7 @@ int main(int argc, char* argv[])
     {
         if (argc <= 2) 
         {
-            std::cout << "no file provided" << std::endl;
+            std::cout << "No file provided" << std::endl;
             return 1;
         }
         if (argc != 3)
@@ -93,12 +128,10 @@ int main(int argc, char* argv[])
             std::cout << "Wrong number of params" << std::endl;
             return 1;
         }
-        if ( not(audioPlayer.loadWav(args.at(2).c_str())) ) 
-        {
-            std::cout << "error loading file" << std::endl;
+        if ( not(playSound(args.at(3))) )
+        {   
             return 1;
         }
-        audioPlayer.play();
         return 0;
     }
 
@@ -157,39 +190,23 @@ int main(int argc, char* argv[])
 
     if (toLowerCase(args.at(1)) == "filter")
     {
+
+        std::string outputFilename = "out.wav";
+
         if (argc < 4)
         {
             std::cout << "Wrong number of params" << std::endl;
             return 1;
         }
 
-        AudioFile<double> aFile = AudioUtils::createAudioFile(args.at(2).c_str());
-        AudioFile<double> bFile = AudioUtils::createAudioFile(args.at(3).c_str());
-
-        AudioFile<double>* spec = &aFile;
-
-        std::vector<double> aSamplesL = aFile.samples.at(0);
-        std::vector<double> bSamplesL = bFile.samples.at(0);
-
-        std::vector<double> leftConv = DSP::convolution(aSamplesL, bSamplesL);
-
-        AudioFile<double> convFile = AudioUtils::samplesToAudioFile(
-                          leftConv, leftConv, AudioUtils::createWavInfo(spec));
-        
-        AudioUtils::writeWavFile(convFile, "out.wav");
+        filter2ch(args.at(2), args.at(3), outputFilename);
 
         if (args.at(4) == "-p")
         {
-            if ( not(audioPlayer.loadWav("out.wav")) ) 
-            {
-                std::cout << "error loading file" << std::endl;
-                return 1;
-            }
-            audioPlayer.play();
+            playSound(outputFilename);
         }
         
         return 0;
-
     }
 
     if (args.at(1) == "info")
@@ -198,7 +215,6 @@ int main(int argc, char* argv[])
         {
             return 1;
         }
-
         AudioUtils::printWavInfo(args.at(2));
         return 0;
     }
