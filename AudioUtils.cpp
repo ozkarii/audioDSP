@@ -31,7 +31,7 @@ AudioFile<double> AudioUtils::samplesToAudioFile(std::vector<double> &left,
     AudioFile<double> output;
     
     output.setSampleRate(info.sampleRate);
-    output.setBitDepth(info.bitDepth);
+    output.setBitDepth(16);
     output.setNumSamplesPerChannel(left.size());
     output.setNumChannels(2);
     
