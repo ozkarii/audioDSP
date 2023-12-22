@@ -29,6 +29,8 @@ namespace AudioUtils {
     
     AudioFile<double> samplesToAudioFile(std::vector<double> &left,
                                         std::vector<double> &right, WavInfo info);
+    
+    void printWavInfo(std::string filename);
 };
 
 
