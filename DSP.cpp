@@ -167,18 +167,11 @@ std::vector<double> DSP::convolution(std::vector<double> &a,
     cVector fftA = DSP::fft(complexA);
     cVector fftB = DSP::fft(complexB);
 
-    int szA = fftA.size();
-    int szB = fftB.size();
-
     // multiply fft's elementwise because fft(conv(a,b)) = fft(a)*fft(b)
     cVector fftOfConv = Math::multiplyElementWise(fftA, fftB);
 
-    int fftOfConvSz = fftOfConv.size();
-
     // finally perform inverse fft to get the convolution of a and b
     std::vector<double> conv = ifft(fftOfConv);
-
-    int sz = conv.size();
 
     if (conv.size() >= outN) 
     {
@@ -192,7 +185,6 @@ std::vector<double> DSP::convolution(std::vector<double> &a,
     return conv;
 
 }
-
 
 std::vector<double> DSP::decimate(std::vector<double> &input,
                                   unsigned int factor)
