@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
             std::cout << "Wrong number of params" << std::endl;
             return 1;
         }
-        if ( not(playSound(args.at(3))) )
+        if ( not(playSound(args.at(2))) )
         {   
             return 1;
         }
