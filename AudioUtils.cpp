@@ -26,12 +26,12 @@ void AudioUtils::writeWavFile(AudioFile<double> &audioFile, std::string outputFi
 }
 
 AudioFile<double> AudioUtils::samplesToAudioFile(std::vector<double> &left, 
-                                    std::vector<double> &right, WavInfo info)
+                                    std::vector<double> &right, WavInfo &info)
 {
     AudioFile<double> output;
     
     output.setSampleRate(info.sampleRate);
-    output.setBitDepth(16);
+    output.setBitDepth(info.bitDepth);
     output.setNumSamplesPerChannel(left.size());
     output.setNumChannels(2);
     

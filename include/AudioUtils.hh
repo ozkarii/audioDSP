@@ -28,7 +28,7 @@ namespace AudioUtils {
     void writeWavFile(AudioFile<double> &audioFile, std::string outputFilename);
     
     AudioFile<double> samplesToAudioFile(std::vector<double> &left,
-                                        std::vector<double> &right, WavInfo info);
+                                        std::vector<double> &right, WavInfo &info);
     
     void printWavInfo(std::string filename);
 };
