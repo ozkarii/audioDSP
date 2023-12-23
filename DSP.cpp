@@ -37,12 +37,12 @@ cVector DSP::fft(cVector &input)
 
     for (unsigned int n(0); n < len; n += 2)
     {
-        even.push_back(input.at(n));
+        even.push_back(input[n]);
     }
 
     for (unsigned int n(1); n < len; n += 2) 
     {
-        odd.push_back(input.at(n));
+        odd.push_back(input[n]);
     }
 
     evenFft = fft(even);
@@ -54,9 +54,9 @@ cVector DSP::fft(cVector &input)
 
     for (int n = 0; n < halfLen; ++n)
     {
-        std::complex<double> t = std::polar(1.0, -2 * M_PI * n / len) * oddFft.at(n);
-        result.at(n) = evenFft.at(n) + t;
-        result.at(n + halfLen) = evenFft.at(n) - t;
+        std::complex<double> t = std::polar(1.0, -2 * M_PI * n / len) * oddFft[n];
+        result[n] = evenFft[n] + t;
+        result[n + halfLen] = evenFft[n] - t;
     }
 
     return result;
@@ -78,12 +78,12 @@ cVector DSP::ifftUnnormalized(cVector &input)
 
     for (unsigned int n(0); n < len; n += 2)
     {
-        even.push_back(input.at(n));
+        even.push_back(input[n]);
     }
 
     for (unsigned int n(1); n < len; n += 2) 
     {
-        odd.push_back(input.at(n));
+        odd.push_back(input[n]);
     }
 
     evenFft = ifftUnnormalized(even);
@@ -95,9 +95,9 @@ cVector DSP::ifftUnnormalized(cVector &input)
 
     for (int n = 0; n < halfLen; ++n)
     {
-        std::complex<double> t = std::polar(1.0, 2 * M_PI * n / len) * oddFft.at(n);
-        result.at(n) = (evenFft.at(n) + t);
-        result.at(n + halfLen) = (evenFft.at(n) - t);
+        std::complex<double> t = std::polar(1.0, 2 * M_PI * n / len) * oddFft[n];
+        result[n] = (evenFft[n] + t);
+        result[n + halfLen] = (evenFft[n] - t);
     }
 
     return result;
@@ -110,7 +110,7 @@ std::vector<double> DSP::ifft(cVector &input)
 
     for (unsigned int i = 0; i < unnormalized.size(); i++)
     {
-        output.at(i) = unnormalized.at(i).real()/unnormalized.size();
+        output[i] = unnormalized[i].real()/unnormalized.size();
     }
 
     return output;
@@ -151,8 +151,8 @@ std::vector<double> DSP::convolution(std::vector<double> &a,
     // convert input signals to complex vectors
     cVector complexA = DSP::toComplexVector(a);
     cVector complexB = DSP::toComplexVector(b);
-
-    // define minimum output length to match linear convolution
+    
+    // define output length to match linear convolution
     unsigned int outN = a.size() + b.size() - 1;
     
     // add zeros to minimum output length
@@ -167,12 +167,13 @@ std::vector<double> DSP::convolution(std::vector<double> &a,
     cVector fftA = DSP::fft(complexA);
     cVector fftB = DSP::fft(complexB);
 
-    // multiply fft's elementwise because fft(conv(a,b)) = fft(a)*fft(b)
-    cVector fftOfConv = Math::multiplyElementWise(fftA, fftB);
+    // multiply fft's elementwise
+    cVector fftProduct = Math::multiplyElementWise(fftA, fftB);
 
     // finally perform inverse fft to get the convolution of a and b
-    std::vector<double> conv = ifft(fftOfConv);
+    std::vector<double> conv = ifft(fftProduct);
 
+    // reduce output length to outN
     if (conv.size() >= outN) 
     {
         conv.erase(conv.begin() + outN, conv.end());

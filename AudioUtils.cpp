@@ -35,8 +35,8 @@ AudioFile<double> AudioUtils::samplesToAudioFile(std::vector<double> &left,
     output.setNumSamplesPerChannel(left.size());
     output.setNumChannels(2);
     
-    output.samples.at(0) = left;
-    output.samples.at(1) = right;
+    output.samples[0] = left;
+    output.samples[1] = right;
 
     return output;
 }
