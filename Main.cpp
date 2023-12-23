@@ -3,10 +3,10 @@
 #include <string>
 #include <cctype>
 #include <csignal>
+#include <thread>
 #include "include/DSP.hh"
 #include "include/Player.hh"
 
-#define GET_VARIABLE_NAME(Variable) (#Variable)
 
 std::string toLowerCase(std::string &s)
 {
@@ -79,6 +79,14 @@ bool playSound(std::string &filename)
     return true;
 }
 
+// thread for calculating the convolution of two signals
+void convolutionThread(std::vector<double> &aSamples, 
+                       std::vector<double> &bSamples,
+                       std::vector<double> &result) 
+{
+    result = DSP::convolution(aSamples, bSamples);
+}
+
 void filter2ch(std::string &a, std::string &b, std::string &out)
 {
 
@@ -90,13 +98,19 @@ void filter2ch(std::string &a, std::string &b, std::string &out)
     // hard code 16bit because 32bit doesn't work
     spec.bitDepth = 16;
 
-    std::vector<double> aSamplesL = aFile.samples.at(0);
-    std::vector<double> bSamplesL = bFile.samples.at(0);
-    std::vector<double> aSamplesR = aFile.samples.at(1);
-    std::vector<double> bSamplesR = bFile.samples.at(1);
+    std::vector<double> aSamplesL = aFile.samples[0];
+    std::vector<double> bSamplesL = bFile.samples[0];
+    std::vector<double> aSamplesR = aFile.samples[1];
+    std::vector<double> bSamplesR = bFile.samples[1];
 
-    std::vector<double> leftConv = DSP::convolution(aSamplesL, bSamplesL);
-    std::vector<double> rightConv = DSP::convolution(aSamplesR, bSamplesR);
+    std::vector<double> leftConv, rightConv;
+    std::thread leftThread(convolutionThread, std::ref(aSamplesL), 
+                           std::ref(bSamplesL), std::ref(leftConv));
+    std::thread rightThread(convolutionThread, std::ref(aSamplesR), 
+                           std::ref(bSamplesR), std::ref(rightConv));
+
+    leftThread.join();
+    rightThread.join();
 
     AudioFile<double> convFile = AudioUtils::samplesToAudioFile(leftConv,
                                                         rightConv, spec);
@@ -118,14 +132,14 @@ int main(int argc, char* argv[])
     std::vector<std::string> args = {};
     for (int i = 0; i < argc; i++) { args.push_back(argv[i]); }
 
-    if (args.at(1) == "-h") 
+    if (args[1] == "-h") 
     {
         std::cout << "help: " << std::endl;
         std::cout << " " << std::endl;
         return 0;
     }
 
-    if (toLowerCase(args.at(1)) == "play")
+    if (toLowerCase(args[1]) == "play")
     {
         if (argc <= 2) 
         {
@@ -137,16 +151,16 @@ int main(int argc, char* argv[])
             std::cout << "Wrong number of params" << std::endl;
             return 1;
         }
-        if ( not(playSound(args.at(2))) )
+        if ( not(playSound(args[2])) )
         {   
             return 1;
         }
         return 0;
     }
 
-    if (toLowerCase(args.at(1)) == "test")
+    if (toLowerCase(args[1]) == "test")
     {
-        if (args.at(2) == "--fft") 
+        if (args[2] == "--fft") 
         {
             cVector a = {2, 3, 4, 1, 3, 5, 29, 1};
             cVector b = {6, -2, 3, 9};
@@ -181,7 +195,7 @@ int main(int argc, char* argv[])
             return 0;
         }
 
-        if (args.at(2) == "--conv") 
+        if (args[2] == "--conv") 
         {
             cVector a = {2, 3, 4, 1, 3, 5, 29, 1};
             cVector b = {6, -2, 3, 9};
@@ -197,7 +211,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    if (toLowerCase(args.at(1)) == "filter")
+    if (toLowerCase(args[1]) == "filter")
     {
 
         std::string outputFilename = "out.wav";
@@ -208,23 +222,24 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        filter2ch(args.at(2), args.at(3), outputFilename);
+        filter2ch(args[2], args[3], outputFilename);
 
-        if (args.at(4) == "-p")
+        if (argc == 5)
         {
-            playSound(outputFilename);
+            if (args[4] == "-p")
+                playSound(outputFilename);
         }
         
         return 0;
     }
 
-    if (args.at(1) == "info")
+    if (args[1] == "info")
     {
         if (argc != 3)
         {
             return 1;
         }
-        AudioUtils::printWavInfo(args.at(2));
+        AudioUtils::printWavInfo(args[2]);
         return 0;
     }
 
