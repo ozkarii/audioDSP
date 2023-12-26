@@ -7,6 +7,20 @@
 #include "include/DSP.hh"
 #include "include/Player.hh"
 
+/* 
+TODO: 
+- fir filter
+- butterworth filter
+- tests (unit, speed/size)
+- polished cli
+- sample rate altering
+- speedup
+- optimization
+- switch -o for filter
+- multithreading
+- make params and variables const
+- windows version
+*/
 
 std::string toLowerCase(std::string &s)
 {
@@ -17,44 +31,18 @@ std::string toLowerCase(std::string &s)
     return output;
 }
 
-void printVector(cVector &input, std::string header = "",
-                 bool inLine = true) 
-{
-    if (inLine) {
-        std::cout << header;
-        for (auto i : input)
-        {
-            std::cout << " " << i;
-        }
-        std::cout << "\n";
-    }
-    else 
-    {
-        std::cout << header << "\n";
-        for (auto i : input)
-        {
-            std::cout << i << "\n";
-        }
-        std::cout << "\n";
-    }
-}
-
-void printVector(std::vector<double> &input, std::string header = "",
-                 bool inLine = true) 
-{
+template <typename T>
+void printVector(const T& input, const std::string& header = "",
+                 bool inLine = true) {
     if (inLine) {
         std::cout << header << " {";
-        for (auto i : input)
-        {
-            std::cout << i << ",";
+        for (const auto& i : input) {
+            std::cout << " " << i << ",";
         }
         std::cout << "}\n";
-    }
-    else 
-    {
+    } else {
         std::cout << header << "\n";
-        for (auto i : input)
-        {
+        for (const auto& i : input) {
             std::cout << i << "\n";
         }
         std::cout << "\n";
@@ -117,6 +105,8 @@ void filter2ch(std::string &a, std::string &b, std::string &out)
     
     AudioUtils::writeWavFile(convFile, out);
 }
+
+// todo: overload for filtering samples
 
 int main(int argc, char* argv[]) 
 {
@@ -208,6 +198,22 @@ int main(int argc, char* argv[])
             printVector(convAB, "conv:");
 
             return 0;
+        }
+
+        if (args[2] == "--fir")
+        {
+            // cutoff = -6dB
+            std::vector<double> ir = FIR::designHamming(5500.0/48000.0, 1000.0/48000.0, FIR::LowPass);
+            std::cout << ir.size() << std::endl;
+            printVector(ir, "ir:", false);
+            AudioFile<double> haha = AudioUtils::createAudioFile("examples/midnight6.wav");
+            std::vector<double> hahaSamples = haha.samples[0];
+            std::string out = "low.wav";
+            WavInfo info = AudioUtils::createWavInfo(&haha);
+            info.bitDepth = 16;
+            std::vector<double> conv = DSP::convolution(hahaSamples, ir);
+            AudioFile<double> outFile = AudioUtils::samplesToAudioFile(conv, conv, info);
+            AudioUtils::writeWavFile(outFile, out);
         }
     }
 
