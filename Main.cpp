@@ -215,6 +215,13 @@ int main(int argc, char* argv[])
             AudioFile<double> outFile = AudioUtils::samplesToAudioFile(conv, conv, info);
             AudioUtils::writeWavFile(outFile, out);
         }
+
+        if (args[2] == "--interpolate")
+        {
+            std::vector<double> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+            std::vector<double> b = DSP::interpolateZeros(a, 2);
+            printVector(b, "b:", true);
+        }
     }
 
     if (toLowerCase(args[1]) == "filter")
