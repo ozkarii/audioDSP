@@ -5,6 +5,7 @@
 #include <complex>
 #include <cmath>
 #include "Math.hh"
+#include "FIR.hh"
 
 namespace DSP
 {
