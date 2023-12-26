@@ -190,11 +190,28 @@ std::vector<double> DSP::convolution(std::vector<double> &a,
 std::vector<double> DSP::decimate(std::vector<double> &input,
                                   unsigned int factor)
 {
-    return std::vector<double>();
+    std::vector<double> output; 
+    for (int i = 0; i < input.size(); i++)
+    {
+        if (i % factor == 0)
+        {
+            output.push_back(input[i]);
+        }
+    }
+    return output;
 }
 
 std::vector<double> DSP::interpolateZeros(std::vector<double> &input,
                                           unsigned int factor)
 {
-    return std::vector<double>();
+    std::vector<double> output; 
+    for (int i = 0; i < input.size(); i++)
+    {
+        output.push_back(input[i]);
+        for (int j = 0; j < factor; j++)
+        {
+            output.push_back(0);
+        }
+    }
+    return output;
 }
