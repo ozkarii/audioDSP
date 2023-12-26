@@ -11,4 +11,12 @@ namespace Math {
     
     cVector multiplyElementWise(cVector &a, cVector &b);
 
+    double sinc(double input);
+
+    double sinc(double input, double x0);
+
+    double sinc(double input, double x0, bool normalize);
+
+    double sinc(double x, bool normalize);
+
 };

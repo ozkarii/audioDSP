@@ -25,7 +25,6 @@ cVector Math::multiplyElementWise(cVector &a, cVector &b)
 {
     if (a.size() != b.size())
     {
-        std::cout << a.size() << " " << b.size() << std::endl;
         throw std::invalid_argument("Vectors must be the same length");
     }
     
@@ -37,4 +36,28 @@ cVector Math::multiplyElementWise(cVector &a, cVector &b)
     }
     
     return output;
+}
+
+double Math::sinc(double x)
+{
+    return sin(x)/x;
+}
+
+double Math::sinc(double x, double x0)
+{
+    if (x == 0) { return x0; }
+    return sin(x)/x;
+}
+
+double Math::sinc(double x, double x0, bool normalize)
+{
+    if (x == 0) { return x0; }
+    if (normalize) {return sin(x*M_PI)/x*M_PI;}
+    return sin(x)/x;
+}
+
+double Math::sinc(double x, bool normalize)
+{
+    if (normalize) {return sin(x*M_PI)/x*M_PI;}
+    return sin(x)/x;
 }
