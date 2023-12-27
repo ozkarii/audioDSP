@@ -1,16 +1,24 @@
 ## Audio player DSP thing
-Simple cli application for playing sound, applying filters etc.
+Simple cli application for playing sound, applying filters etc.\
 Uses Simple DirectMedia Layer for audio backend.
 
 ## Requirements
-Tested on Ubuntu 22.04.
-Run ```sudo apt install libsdl2-dev``` to install dependencies.
+CMake 3.14 or newer required. Tested on Ubuntu 22.04.\
+Install dependencies:
+```
+sudo apt install cmake
+sudo apt install libsdl2-dev
+``` 
 
-### What I learned
-- How to read API reference and implement code based on it
-- Using Linux terminal efficiently
-- C++ developement on Linux
-- Audio programming
-- How makefiles work
-- Compiler and linker flags
-- Working with git branches
+## Usage
+Build using CMake:
+```
+mkdir build
+cd build
+cmake ..
+make
+```
+Run:
+```
+./app help
+```
