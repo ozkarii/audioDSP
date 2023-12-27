@@ -20,6 +20,15 @@ TODO:
 - multithreading
 - make params and variables const
 - windows version
+
+### What I learned
+- How to read API reference and implement code based on it
+- Using Linux terminal efficiently
+- C++ developement on Linux
+- Audio programming
+- How makefiles work
+- Compiler and linker flags
+- Working with git branches
 */
 
 std::string toLowerCase(std::string &s)
@@ -114,18 +123,26 @@ int main(int argc, char* argv[])
 
     if (argc == 1)
     {
-        // add list of all commands
-        std::cout << "no params" << std::endl;
+        std::cout << "No params!" << std::endl;
+        std::cout << "Available commands:\n"
+          << "play\n"
+          << "test\n"
+          << "filter\n"
+          << "info" << std::endl;
         return 1;
     }
 
     std::vector<std::string> args = {};
     for (int i = 0; i < argc; i++) { args.push_back(argv[i]); }
 
-    if (args[1] == "-h") 
+    if (args[1] == "-h" or args[1] == "--help" or args[1] == "help") 
     {
-        std::cout << "help: " << std::endl;
-        std::cout << " " << std::endl;
+        std::cout << "Available commands:\n"
+                  << "play\n"
+                  << "test\n"
+                  << "filter\n"
+                  << "info" << std::endl;
+        
         return 0;
     }
 
