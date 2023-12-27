@@ -1,1 +1,1 @@
-include/AudioFile/AudioFile.h -linguist-detectable
+include/AudioFile/* linguist-detectable=false
