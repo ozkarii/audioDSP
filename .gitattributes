@@ -1,4 +1,1 @@
-SDL* linguist-detectable=false
-AudioFile.h linguist-detectable=false
-close_code.h linguist-detectable=false
-begin_code.h linguist-detectable=false
+include/AudioFile/AudioFile.h linguist-detectable=false
