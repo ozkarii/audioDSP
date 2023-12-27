@@ -1,4 +1,4 @@
-#include "include/Player.hh"
+#include "Player.hh"
 
 // userdata comes from the audio data through wavSpec
 // stream = pointer to where this fucnction copies audio

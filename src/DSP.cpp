@@ -1,5 +1,5 @@
 #include <iostream>
-#include "include/DSP.hh"
+#include "DSP.hh"
 
 
 std::vector<double> DSP::slowConvolution(std::vector<double> &sound,
@@ -191,7 +191,7 @@ std::vector<double> DSP::decimate(std::vector<double> &input,
                                   unsigned int factor)
 {
     std::vector<double> output; 
-    for (int i = 0; i < input.size(); i++)
+    for (unsigned int i = 0; i < input.size(); i++)
     {
         if (i % factor == 0)
         {
@@ -205,10 +205,10 @@ std::vector<double> DSP::interpolateZeros(std::vector<double> &input,
                                           unsigned int factor)
 {
     std::vector<double> output; 
-    for (int i = 0; i < input.size(); i++)
+    for (unsigned int i = 0; i < input.size(); i++)
     {
         output.push_back(input[i]);
-        for (int j = 0; j < factor; j++)
+        for (unsigned int j = 0; j < factor; j++)
         {
             output.push_back(0);
         }

@@ -1,4 +1,4 @@
-#include "include/FIR.hh"
+#include "FIR.hh"
 
 /// @brief Design FIR filter using hamming window, at the cutoff frequency
 ///        the magnitude response will be -6dB
@@ -55,5 +55,7 @@ std::vector<double> FIR::designHamming(double cutoff, double transitionWidth,
     {
         return std::vector<double>();
     }
+
+    return std::vector<double>();
 }
 

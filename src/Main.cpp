@@ -4,8 +4,8 @@
 #include <cctype>
 #include <csignal>
 #include <thread>
-#include "include/DSP.hh"
-#include "include/Player.hh"
+#include "DSP.hh"
+#include "Player.hh"
 
 /* 
 TODO: 
@@ -206,7 +206,7 @@ int main(int argc, char* argv[])
             std::vector<double> ir = FIR::designHamming(5500.0/48000.0, 1000.0/48000.0, FIR::LowPass);
             std::cout << ir.size() << std::endl;
             printVector(ir, "ir:", false);
-            AudioFile<double> haha = AudioUtils::createAudioFile("examples/midnight6.wav");
+            AudioFile<double> haha = AudioUtils::createAudioFile("../examples/midnight6.wav");
             std::vector<double> hahaSamples = haha.samples[0];
             std::string out = "low.wav";
             WavInfo info = AudioUtils::createWavInfo(&haha);

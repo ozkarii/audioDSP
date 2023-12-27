@@ -1,4 +1,4 @@
-#include "include/Math.hh"
+#include "Math.hh"
 #include <stdexcept>
 #include <iostream>
 

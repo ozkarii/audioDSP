@@ -1,4 +1,4 @@
-#include "include/AudioUtils.hh"
+#include "AudioUtils.hh"
 
 WavInfo AudioUtils::createWavInfo(AudioFile<double>* audioFile)
 {
