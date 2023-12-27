@@ -1,6 +1,7 @@
 **/fmod/
 **.out
 **/.vscode/
+**/build/
 *.bin
 **/SDL2-2.28.5
 *.o
