@@ -55,9 +55,3 @@ double Math::sinc(double x, double x0, bool normalize)
     if (normalize) {return sin(x*M_PI)/x*M_PI;}
     return sin(x)/x;
 }
-
-double Math::sinc(double x, bool normalize)
-{
-    if (normalize) {return sin(x*M_PI)/x*M_PI;}
-    return sin(x)/x;
-}

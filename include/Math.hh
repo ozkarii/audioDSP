@@ -17,6 +17,4 @@ namespace Math {
 
     double sinc(double input, double x0, bool normalize);
 
-    double sinc(double x, bool normalize);
-
 };
