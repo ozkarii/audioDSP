@@ -1,10 +1,6 @@
 #include "Player.hh"
 
-// userdata comes from the audio data through wavSpec
-// stream = pointer to where this fucnction copies audio
-// bufferLen = length of the current buffer
-// has to be declared outside of Player class becuase a member function
-// is not allowed by SDL
+
 void wavCallback(void* userdata, Uint8* stream, int bufferLen) 
 {
     AudioData* audio = (AudioData*)userdata;
@@ -84,5 +80,3 @@ void Player::play()
 
     SDL_CloseAudioDevice(audioDevice);
 }
-
-
