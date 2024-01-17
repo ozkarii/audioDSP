@@ -3,7 +3,7 @@ project(audioDSP)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g -pedantic")
 
 find_package(SDL2 REQUIRED)
 include_directories(include ${SDL2_INCLUDE_DIRS})
@@ -26,6 +26,7 @@ set(APP_SRCS
 
 set(TEST_SRCS
     tests/Math_test.cpp
+    tests/DSP_test.cpp
     src/Player.cpp
     src/DSP.cpp
     src/AudioUtils.cpp
