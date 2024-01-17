@@ -2,19 +2,18 @@
 #include "DSP.hh"
 
 
-std::vector<double> DSP::slowConvolution(std::vector<double> &sound,
-                                        std::vector<double> &ir)
+std::vector<double> DSP::slowConvolution(std::vector<double> &a,
+                                         std::vector<double> &b)
 {
-    unsigned int irLength = ir.size();
-    unsigned int soundLength = sound.size();
-    std::cout << soundLength + irLength << std::endl;
-    std::vector<double> output(soundLength + irLength - 1, 0);
+    unsigned int aLength = a.size();
+    unsigned int bLength = b.size();
+    std::vector<double> output(aLength + bLength - 1, 0);
 
-    for (unsigned int n = 0; n < soundLength; n++)
+    for (unsigned int n = 0; n < aLength; n++)
     {
-        for (unsigned int k = 0; k < irLength; k++)
+        for (unsigned int k = 0; k < bLength; k++)
         {
-            output[n + k] += ir[k] * sound[n];
+            output[n + k] += b[k] * a[n];
         }
     }
 
@@ -116,7 +115,6 @@ std::vector<double> DSP::ifft(cVector &input)
     return output;
 }
 
-// add zeros to the end until the length of input is a power of two
 void DSP::zeroPad(cVector &input)
 {
     unsigned long int nearestPow2 = 1;
@@ -124,12 +122,10 @@ void DSP::zeroPad(cVector &input)
     input.resize(nearestPow2, std::complex<double>(0, 0));
 }
 
-// add zeros until given length is reached
 void DSP::zeroPad(cVector &input, unsigned int length)
 {
     input.resize(length, std::complex<double>(0, 0));
 }
-
 
 cVector DSP::toComplexVector(std::vector<double> &input)
 {
@@ -142,7 +138,6 @@ cVector DSP::toComplexVector(std::vector<double> &input)
 
     return result;
 }
-
 
 std::vector<double> DSP::convolution(std::vector<double> &a,
                                      std::vector<double> &b)
