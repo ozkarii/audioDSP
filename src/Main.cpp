@@ -115,7 +115,6 @@ void filter2ch(std::string &a, std::string &b, std::string &out)
     AudioUtils::writeWavFile(convFile, out);
 }
 
-// todo: overload for filtering samples
 
 int main(int argc, char* argv[]) 
 {
@@ -125,10 +124,11 @@ int main(int argc, char* argv[])
     {
         std::cout << "No params!" << std::endl;
         std::cout << "Available commands:\n"
-          << "play\n"
-          << "test\n"
-          << "filter\n"
-          << "info" << std::endl;
+                  << "   play\n"
+                  << "   test\n"
+                  << "   filter\n"
+                  << "   info\n" 
+                  << "   help" << std::endl;
         return 1;
     }
 
@@ -138,10 +138,11 @@ int main(int argc, char* argv[])
     if (args[1] == "-h" or args[1] == "--help" or args[1] == "help") 
     {
         std::cout << "Available commands:\n"
-                  << "play\n"
-                  << "test\n"
-                  << "filter\n"
-                  << "info" << std::endl;
+                  << "   play\n"
+                  << "   test\n"
+                  << "   filter\n"
+                  << "   info\n" 
+                  << "   help" << std::endl;
         
         return 0;
     }
@@ -165,85 +166,8 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    if (toLowerCase(args[1]) == "test")
-    {
-        if (args[2] == "--fft") 
-        {
-            cVector a = {2, 3, 4, 1, 3, 5, 29, 1};
-            cVector b = {6, -2, 3, 9};
-
-            std::vector<double> a_real = {2, 3, 4, 1, 3, 5, 29, 1};
-            std::vector<double> b_real = {6, -2, 3, 9};
-
-            printVector(a, "a:");
-            printVector(b, "b:");
-
-            DSP::zeroPad(a);
-            DSP::zeroPad(b);
-
-            printVector(a, "a_0:");
-            printVector(b, "b_0:");
-
-            cVector a_fft = DSP::fft(a);
-            cVector b_fft = DSP::fft(b);
-
-            printVector(a_fft, "fft_a:");
-            printVector(b_fft, "fft_b:");
-
-            std::vector<double> a_ifft = DSP::ifft(a_fft);
-            std::vector<double> b_ifft = DSP::ifft(b_fft);
-
-            printVector(a_ifft, "ifft_a:");
-            printVector(b_ifft, "ifft_b:");
-            
-            std::vector<double> convAB = DSP::convolution(a_real, b_real);
-            printVector(convAB, "conv:");
-
-            return 0;
-        }
-
-        if (args[2] == "--conv") 
-        {
-            cVector a = {2, 3, 4, 1, 3, 5, 29, 1};
-            cVector b = {6, -2, 3, 9};
-
-            std::vector<double> a_real = {2, 3, 4, 1, 3, 5, 29, 1};
-            std::vector<double> b_real = {6, -2, 3, 9};
-                        
-            std::vector<double> convAB = DSP::convolution(a_real, b_real);
-            
-            printVector(convAB, "conv:");
-
-            return 0;
-        }
-
-        if (args[2] == "--fir")
-        {
-            // cutoff = -6dB
-            std::vector<double> ir = FIR::designHamming(5500.0/48000.0, 1000.0/48000.0, FIR::LowPass);
-            std::cout << ir.size() << std::endl;
-            printVector(ir, "ir:", false);
-            AudioFile<double> haha = AudioUtils::createAudioFile("../examples/midnight6.wav");
-            std::vector<double> hahaSamples = haha.samples[0];
-            std::string out = "low.wav";
-            WavInfo info = AudioUtils::createWavInfo(&haha);
-            info.bitDepth = 16;
-            std::vector<double> conv = DSP::convolution(hahaSamples, ir);
-            AudioFile<double> outFile = AudioUtils::samplesToAudioFile(conv, conv, info);
-            AudioUtils::writeWavFile(outFile, out);
-        }
-
-        if (args[2] == "--interpolate")
-        {
-            std::vector<double> a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-            std::vector<double> b = DSP::interpolateZeros(a, 2);
-            printVector(b, "b:", true);
-        }
-    }
-
     if (toLowerCase(args[1]) == "filter")
     {
-
         std::string outputFilename = "out.wav";
 
         if (argc < 4)
@@ -252,12 +176,60 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        filter2ch(args[2], args[3], outputFilename);
+        if (argc == 4) 
+        {
+            filter2ch(args[2], args[3], outputFilename);
+            return 0;
+        }
 
         if (argc == 5)
         {
-            if (args[4] == "-p")
-                playSound(outputFilename);
+            if (args[4] == "-o") {
+                std::cout << "No filename provided" << std::endl;
+                return 1;
+            }
+            else if (args[4] == "-p") {
+                if(playSound(outputFilename)) {return 0;}
+                return 1;
+            }
+            else {
+                std::cout << "Invalid parameters" << std::endl;
+                return 1;
+            }
+        }
+
+        if (argc == 6)
+        {
+            if (args[4] == "-o") {
+                outputFilename = args[5];
+                filter2ch(args[2], args[3], outputFilename);
+                return 0;
+            }
+            else {
+                std::cout << "Invalid parameters" << std::endl;
+                return 1;
+            }
+        }
+
+        if (argc == 7)
+        {
+            if (args[4] == "-o") {
+                outputFilename = args[5];
+                filter2ch(args[2], args[3], outputFilename);
+                if (args[6] == "-p") {
+                    if(playSound(outputFilename)){return 0;}
+                    return 1;
+                }
+                std::cout << "Invalid parameters" << std::endl;
+                return 1;
+            }
+            std::cout << "Invalid parameters" << std::endl;         
+            return 1;
+        }
+
+        if (argc > 7) {
+            std::cout << "Too many parameters" << std::endl;
+            return 1;
         }
         
         return 0;
@@ -272,5 +244,8 @@ int main(int argc, char* argv[])
         AudioUtils::printWavInfo(args[2]);
         return 0;
     }
+
+    std::cout << "Invalid parameters, try help" << std::endl;
+    return 1;
 
 }
