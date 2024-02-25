@@ -41,7 +41,7 @@ Player::~Player()
 
 bool Player::loadWav(const char *name)
 {
-    filename = name;
+    const char* filename = name;
     // load wav from "file" into memory, populate "wavSpec", "wavStart",
     // and "wavLength" accordingly
     if (SDL_LoadWAV(filename, &wavSpec, &wavStart, &wavLength) == NULL)
