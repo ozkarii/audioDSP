@@ -7,29 +7,6 @@
 #include "DSP.hh"
 #include "Player.hh"
 
-/* 
-TODO: 
-- fir filter
-- butterworth filter
-- tests (unit, speed/size)
-- polished cli
-- sample rate altering
-- speedup
-- optimization
-- switch -o for filter
-- multithreading
-- make params and variables const
-- windows version
-
-### What I learned
-- How to read API reference and implement code based on it
-- Using Linux terminal efficiently
-- C++ developement on Linux
-- Audio programming
-- How makefiles work
-- Compiler and linker flags
-- Working with git branches
-*/
 
 std::string toLowerCase(std::string &s)
 {
@@ -124,10 +101,10 @@ int main(int argc, char* argv[])
     {
         std::cout << "No params!" << std::endl;
         std::cout << "Available commands:\n"
-                  << "   play\n"
-                  << "   test\n"
-                  << "   filter\n"
-                  << "   info\n" 
+                  << "   play <audio_file_path>\n"
+                  << "   filter <audio_path> <ir_path> optional flags: \n\
+          'specify output file (default out.wav)' -o <output_file>, 'play sound' -p\n"
+                  << "   info (about wav file)\n" 
                   << "   help" << std::endl;
         return 1;
     }
@@ -138,10 +115,10 @@ int main(int argc, char* argv[])
     if (args[1] == "-h" or args[1] == "--help" or args[1] == "help") 
     {
         std::cout << "Available commands:\n"
-                  << "   play\n"
-                  << "   test\n"
-                  << "   filter\n"
-                  << "   info\n" 
+                  << "   play <audio_file_path>\n"
+                  << "   filter <audio_path> <ir_path> optional flags: \n\
+        'specify output file (default out.wav)' -o <output_file>, 'play sound' -p\n"
+                  << "   info (about wav file)\n" 
                   << "   help" << std::endl;
         
         return 0;
