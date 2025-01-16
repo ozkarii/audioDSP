@@ -23,19 +23,6 @@ Run:
 ./app help
 ```
 
-### TODO:
-- fir filter
-- butterworth filter
-- tests (unit, speed/size)
-- polished cli
-- more comments
-- sample rate altering
-- optimization
-- circular buffer for fft
-- more multithreading
-- make params and variables const
-- windows version (different audio api)
-
 ### What I learned
 - How to read API reference and implement code based on it
 - Using bash efficiently
